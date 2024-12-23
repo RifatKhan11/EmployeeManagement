@@ -5,6 +5,7 @@ using EmployeeManagement.Services.Dapper.IInterfaces;
 using EmployeeManagement.Services.EmployeeService.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing.Printing;
+using System.Linq;
 
 namespace EmployeeManagement.Services.EmployeeService
 {
@@ -19,6 +20,7 @@ namespace EmployeeManagement.Services.EmployeeService
             this._dapper = dapper;
         }
 
+        #region Employee 
         public async Task<IEnumerable<EmployeeInfoModel>> GetAllAsync()
         {
             return await _context.Employees
@@ -34,7 +36,7 @@ namespace EmployeeManagement.Services.EmployeeService
                    position = e.position,
                    joiningDate = e.joiningDate,
 
-               }).ToListAsync();
+               }).AsNoTracking().ToListAsync();
         }
 
         public async Task<IEnumerable<EmployeeInfoModel>> GetAllAsync(int page, int pageSize)
@@ -62,7 +64,7 @@ namespace EmployeeManagement.Services.EmployeeService
         public async Task<EmployeeInfo> GetByIdAsync(int id)
         {
             return await _context.Employees
-                .Include(e => e.department)
+                .Include(e => e.department).AsNoTracking()
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
 
@@ -106,19 +108,100 @@ namespace EmployeeManagement.Services.EmployeeService
         {
 
             EmployeeSearchModel employeeSearchModel = null;
-            var data = await _dapper.FromSqlAsync<Sp_EmployeeSearchModel>($"Sp_GetEmployeInfo '{name}',{deptId},'{position}',{score}");
-
+            var count= await _context.PerformanceReviews.Where(x=>x.isActive == true).CountAsync();
+            var data = await _dapper.FromSqlAsync<Sp_EmployeeSearchModel>($"Sp_GetEmployeeBy '{name}',{deptId},'{position}',{score},{page},{pageSize}");
             employeeSearchModel.sp_EmployeeSearch = data;
             employeeSearchModel.CurrentPage = page;
-            employeeSearchModel.TotalRecords = data.Count();
+            employeeSearchModel.TotalRecords = count;
             employeeSearchModel.PageSize = pageSize;
-            employeeSearchModel.TotalPages = (int)Math.Ceiling((double)data.Count() / pageSize);
+            employeeSearchModel.TotalPages = (int)Math.Ceiling((double)count / pageSize);
             return employeeSearchModel;
 
 
 
 
         }
+        #endregion
+
+        #region Performance
+
+        public async Task<IEnumerable<PerformanceReviewModel>> GetAllPerformanceAsync(int page, int pageSize)
+        {
+            int count = await _context.PerformanceReviews.Where(x => x.isActive == true).CountAsync();
+
+                        return await _context.PerformanceReviews
+                   .Include(e => e.employee).Include(x => x.employee.department)
+                   .Where(x => x.isActive == true)
+                   .Select(e => new PerformanceReviewModel
+                   {
+                       Id = e.Id,
+                       reviewDate = e.reviewDate,
+                       employeeName = e.employee.name,
+                       score = e.score,
+                       notes = e.notes,
+                       dept = e.employee.department.departmentName,
+
+                       CurrentPage = page,
+                       TotalRecords = count,
+                       PageSize = pageSize,
+                       TotalPages = (int)Math.Ceiling((double)count / pageSize)
+                   }).Skip((page - 1) * pageSize).Take(pageSize).AsNoTracking().ToListAsync();
+        }
+        public async Task<PerformanceReviewModel> GetAllPerformanceAsync(int Id)
+        {
+            int count = await _context.PerformanceReviews.Where(x => x.isActive == true).CountAsync();
+
+                        return await _context.PerformanceReviews
+                   .Include(e => e.employee)
+                   .Where(x => x.isActive == true && x.Id==Id)
+                   .Select(e => new PerformanceReviewModel
+                   {
+                       Id = e.Id,
+                       employeeId=e.employeeId,
+                       reviewDate = e.reviewDate,
+                       employeeName = e.employee.name,
+                       score = e.score,
+                       notes = e.notes,    
+                   }).AsNoTracking().FirstOrDefaultAsync();
+        }
+
+        public async Task AddPerformanceAsync(PerformanceReview perfm)
+        {
+            await _context.PerformanceReviews.AddAsync(perfm);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdatePerformanceAsync(PerformanceReview perfm)
+        {
+            var perf = await _context.PerformanceReviews.FindAsync(perfm.Id);
+            if (perf != null)
+            {
+                perf.employeeId = perfm.employeeId;
+                perf.reviewDate = perfm.reviewDate;
+                perf.score = perfm.score;
+                perf.notes = perfm.notes;
+
+                perf.isActive = true;
+
+                _context.PerformanceReviews.Update(perf);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeleteReview(int id)
+        {
+            var existingEmployee = await _context.PerformanceReviews.FindAsync(id);
+            if (existingEmployee != null)
+            {
+                existingEmployee.isActive = false;
+
+                _context.PerformanceReviews.Update(existingEmployee);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+
+
         public async Task<EmployeeSearchModel> GetScoreReport(int page, int pageSize)
         {
 
@@ -136,5 +219,7 @@ namespace EmployeeManagement.Services.EmployeeService
 
 
         }
+
+        #endregion
     }
 }

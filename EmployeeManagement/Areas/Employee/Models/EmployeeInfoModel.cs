@@ -23,5 +23,7 @@ namespace EmployeeManagement.Areas.Employee.Models
         public EmployeeInfoModel employeeInfo { get; set; }
 
         public IEnumerable<DepartmentModel> deptList { get; set; }
+        public PerformanceReviewModel Performance { get; set; }
+        public IEnumerable<PerformanceReviewModel> PerformanceList { get; set; }
     }
 }

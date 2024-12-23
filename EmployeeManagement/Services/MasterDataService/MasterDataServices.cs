@@ -34,7 +34,7 @@ namespace EmployeeManagement.Services.MasterDataService
         public async Task<DepartmentInfo> GetByIdAsync(int id)
         {
             return await _dbContext.Departments
-                .Include(e => e.manager)
+                .Include(e => e.manager).AsNoTracking()
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
         public async Task<IEnumerable<DepartmentModel>> GetAllAsync(int page, int pageSize)
@@ -63,27 +63,6 @@ namespace EmployeeManagement.Services.MasterDataService
 
             return departments;
         }
-
-        //public async Task<IEnumerable<DepartmentModel>> GetAllAsync(int page, int pageSize)
-        //{
-        //    int count = await _dbContext.Departments.Where(x => x.isActive == true).CountAsync();
-
-        //    return await _dbContext.Departments
-        //    .Where(x=>x.isActive == true).Include(x=>x.manager)
-        //    .Select(x=> new DepartmentModel
-        //    {
-        //        Id= x.Id,
-        //        departmentName=x.departmentName,
-        //        managerId=x.managerId,
-        //        budget=x.budget,
-        //        managerName=x.manager.name,
-        //        CurrentPage = page,
-        //        TotalRecords = count,
-        //        PageSize = pageSize,
-        //        TotalPages = (int)Math.Ceiling((double)count / pageSize)
-
-        //    }).ToListAsync();
-        //}
         public async Task<IEnumerable<DepartmentModel>> GetAllAsync()
         {
 
