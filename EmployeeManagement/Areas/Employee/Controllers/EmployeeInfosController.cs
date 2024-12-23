@@ -3,6 +3,8 @@ using EmployeeManagement.Data.Entity.Emp;
 using EmployeeManagement.Services.EmployeeService.Interfaces;
 using EmployeeManagement.Services.MasterDataServices.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing.Drawing2D;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace EmployeeManagement.Areas.Employee.Controllers
 {
@@ -62,11 +64,17 @@ namespace EmployeeManagement.Areas.Employee.Controllers
         public async Task<IActionResult> SearchEmployeePartial(string name,int deptId,string position,int score,int page = 1, int pageSize = 10)
         {
             var employees = await _employeeRepository.GetEmployeeByFilter(name, deptId, position, score, page, pageSize);
-            EmployeeSearchModel model = new EmployeeSearchModel();
-            model.employeeSearch = employees;
+            EmployeePaginationModel model = new EmployeePaginationModel
+            {
+                employeeList = employees,
+                PageNumber = page,
+                PageSize = pageSize,
+                TotalPages = (int)Math.Ceiling((double)employees?.FirstOrDefault()?.countRow / pageSize),
+                totalItems = employees?.FirstOrDefault()?.countRow
+            };
 
             return PartialView("_EmployeePartial", model);
-        }
+        }   
 
     }
 }

@@ -104,22 +104,12 @@ namespace EmployeeManagement.Services.EmployeeService
             }
         }
 
-        public async Task<EmployeeSearchModel> GetEmployeeByFilter(string name, int deptId, string position, int score, int page, int pageSize)
+        public async Task<IEnumerable<Sp_EmployeeSearchModel>> GetEmployeeByFilter(string name, int deptId, string position, int score, int page, int pageSize)
         {
 
-            EmployeeSearchModel employeeSearchModel = null;
-            var count= await _context.PerformanceReviews.Where(x=>x.isActive == true).CountAsync();
-            var data = await _dapper.FromSqlAsync<Sp_EmployeeSearchModel>($"Sp_GetEmployeeBy '{name}',{deptId},'{position}',{score},{page},{pageSize}");
-            employeeSearchModel.sp_EmployeeSearch = data;
-            employeeSearchModel.CurrentPage = page;
-            employeeSearchModel.TotalRecords = count;
-            employeeSearchModel.PageSize = pageSize;
-            employeeSearchModel.TotalPages = (int)Math.Ceiling((double)count / pageSize);
-            return employeeSearchModel;
-
-
-
-
+            
+            var data = await _dapper.FromSqlAsync<Sp_EmployeeSearchModel>($"Sp_GetEmployeeBy '{name}',{deptId},'{position}',{score},{page},{pageSize}");            
+            return data;
         }
         #endregion
 

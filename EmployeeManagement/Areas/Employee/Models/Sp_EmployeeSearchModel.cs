@@ -13,12 +13,11 @@
     }
     public class Sp_EmployeeSearchModel
     {
-        public int Id { get; set; }
+        public int? countRow { get; set; }
+        public decimal? score { get; set; }
         public string name { get; set; }
-        public string email { get; set; }
         public string phoneNumber { get; set; }
-        public int? departmentId { get; set; }
-        public string department { get; set; }
+        public string departmentName { get; set; }
         public string position { get; set; }
         public DateTime? joiningDate { get; set; }
     }

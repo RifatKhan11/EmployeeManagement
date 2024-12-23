@@ -1,125 +1,130 @@
-﻿
+﻿@model EmployeeInfoModel
+
 @{
-    ViewData["Title"] = "Search Employee";
+    ViewData["Title"] = "Employee Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
 }
+
+@section Style {
     <style>
-        .filter-section {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-
-        .filter-label {
-            font-weight: bold;
-        }
-
-        .employee-card {
-            border: 1px solid #dee2e6;
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 15px;
+        #myDivloader {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            display: block;
         }
     </style>
+}
 
-
-    <div class="container my-4">
-        <h1 class="text-center">Employee Search</h1>
-
-        <!-- Filter Section -->
-        <div class="filter-section">
-            <form id="searchForm" onsubmit="filterEmployees(event)">
-                <div class="row">
-                    <!-- Search by Name -->
-                    <div class="col-md-4 mb-3">
-                        <label for="name" class="filter-label">Search by Name:</label>
-                        <input type="text" id="name" name="name" class="form-control" placeholder="Enter employee name">
-                    </div>
-
-                    <!-- Filter by Department -->
-                    <div class="col-md-4 mb-3">
-                        <label for="department" class="filter-label">Filter by Department:</label>
-                        <select id="department" name="department" class="form-control">
-                            <option value="">Select Department</option>
-                            <option value="HR">HR</option>
-                            <option value="IT">IT</option>
-                            <option value="Finance">Finance</option>
-                            <option value="Marketing">Marketing</option>
-                        </select>
-                    </div>
-
-                    <!-- Filter by Position -->
-                    <div class="col-md-4 mb-3">
-                        <label for="position" class="filter-label">Filter by Position:</label>
-                        <select id="position" name="position" class="form-control">
-                            <option value="">Select Position</option>
-                            <option value="Manager">Manager</option>
-                            <option value="Developer">Developer</option>
-                            <option value="Analyst">Analyst</option>
-                            <option value="Executive">Executive</option>
-                        </select>
-                    </div>
-
-                    <!-- Filter by Performance Score -->
-                    <div class="col-md-6 mb-3">
-                        <label for="performanceScore" class="filter-label">Performance Score Range:</label>
-                        <div class="d-flex align-items-center">
-                            <input type="number" id="scoreMin" name="scoreMin" class="form-control mr-2" placeholder="Min" min="0">
-                            <span>to</span>
-                            <input type="number" id="scoreMax" name="scoreMax" class="form-control ml-2" placeholder="Max" min="0">
+<div class="row clearfix">
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Employee Serach</h6>
+                <a class="btn btn-success btn-sm" onClick="javascript:history.go(-1)" style="float:right;color:white">Back</a>
+            </div>
+            <br />
+            <div class="row" style="padding:10px;">
+                <div class="col-sm-6">
+                    <div class="form-group row">
+                        <label for="range" class="col-sm-4 col-form-label">Employee Name</label>
+                        <div class="col-sm-8">
+                            <input id="name" name="name" class="form-control" autocomplete="off" />
                         </div>
                     </div>
+                </div>
 
-                    <!-- Search Button -->
-                    <div class="col-md-12 text-right">
-                        <button type="submit" class="btn btn-primary">Search</button>
-                        <button type="reset" class="btn btn-secondary">Reset</button>
+                <div class="col-sm-6">
+                    <div class="form-group row">
+                        <label for="titles" class="col-sm-4 col-form-label">Department</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" id="deptId">
+                                <option value="0">Select Department</option>
+                                @foreach (var item in Model.deptList)
+                                {
+                                    <option value="@item.Id">@item.departmentName</option>
+                                }
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </form>
-        </div>
 
-        <!-- Results Section -->
-        <div id="results">
-            <!-- Employee Cards will be dynamically added here -->
+                <div class="col-sm-6">
+                    <div class="form-group row">
+                        <label for="description" class="col-sm-4 col-form-label">Position</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" id="position">
+                                <option value="">Select Position</option>
+                                <option value="Manager">Manager</option>
+                                <option value="Executive">Executive</option>
+                                <option value="Jr Executive">Jr Executive</option>
+                                <option value="Accountant">Accountant</option>
+                                <option value="Hr">Hr</option>
+                                <option value="Peon">Peon</option>
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group row">
+                        <label for="range" class="col-sm-4 col-form-label">Score</label>
+                        <div class="col-sm-8">
+                            <input id="score" name="score" class="form-control" autocomplete="off" />
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-6">
+                </div>
+                <div class="col-sm-6">
+                    <button class="btn btn-success" id="searchShip" style="float:right;margin-right:15px;">Search</button>
+                </div>
+
+
+                <div class="text-center col-6 offset-3" id="myDivloader" style="display:none;">
+                    <img style="width:20%; height:50%" src="~/images/loader01.gif" />
+                </div>
+            </div>
+            <hr />
+
+
+
         </div>
     </div>
+</div>
 
+
+<div id="loadder" class="text-center" style="display:none;">
+    <img style="height:80px" src="~/images/loader01.gif" />
+</div>
+
+
+<div id="LoadPartialData">
+</div>
+
+
+@section Scripts {
     <script>
-        // Example function to handle filtering (Replace with actual API calls or logic)
-        function filterEmployees(event) {
-            event.preventDefault();
-            const name = document.getElementById('name').value;
-            const department = document.getElementById('department').value;
-            const position = document.getElementById('position').value;
-            const scoreMin = document.getElementById('scoreMin').value;
-            const scoreMax = document.getElementById('scoreMax').value;
 
-            console.log("Filters:", { name, department, position, scoreMin, scoreMax });
+        $("#searchShip").click(function () {
+            var name = encodeURIComponent($('#name').val());
+            var deptId = $('#deptId').val();
+            var position = encodeURIComponent($('#position').val());
+            var score = $('#score').val();
 
-            // Simulate search results (Replace with real API calls)
-            const mockResults = [
-                { name: "John Doe", department: "IT", position: "Developer", score: 85 },
-                { name: "Jane Smith", department: "HR", position: "Manager", score: 90 }
-            ];
+            $('#loadder').show();
 
-            const resultsDiv = document.getElementById('results');
-            resultsDiv.innerHTML = mockResults
-                .filter(emp => (!name || emp.name.includes(name)) &&
-                    (!department || emp.department === department) &&
-                    (!position || emp.position === position) &&
-                    (!scoreMin || emp.score >= scoreMin) &&
-                    (!scoreMax || emp.score <= scoreMax))
-                .map(emp => `
-                            <div class="employee-card">
-                                <h5>${emp.name}</h5>
-                                <p>Department: ${emp.department}</p>
-                                <p>Position: ${emp.position}</p>
-                                <p>Performance Score: ${emp.score}</p>
-                            </div>
-                        `)
-                .join('');
-        }
+            $('#LoadPartialData').empty();
+            $('#LoadPartialData').load(`/Employee/EmployeeInfos/SearchEmployeePartial?name=${name}&deptId=${deptId}&position=${position}&score=${score}&page=1&pageSize=5`);
+        });
+
+
+
     </script>
-
-
+}

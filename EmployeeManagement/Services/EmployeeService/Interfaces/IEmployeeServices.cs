@@ -11,7 +11,7 @@ namespace EmployeeManagement.Services.EmployeeService.Interfaces
         Task AddAsync(EmployeeInfo employee);
         Task UpdateAsync(EmployeeInfo employee);
         Task DeleteAsync(int id);
-        Task<EmployeeSearchModel> GetEmployeeByFilter(string name, int deptId, string position, int score, int page, int pageSize);
+        Task<IEnumerable<Sp_EmployeeSearchModel>> GetEmployeeByFilter(string name, int deptId, string position, int score, int page, int pageSize);
         #endregion
 
         #region Performance
