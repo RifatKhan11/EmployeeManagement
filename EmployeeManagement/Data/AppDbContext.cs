@@ -1,6 +1,6 @@
-﻿using EmployeeManagement.Data.Entity.Employee;
+﻿using EmployeeManagement.Data.Entity;
+using EmployeeManagement.Data.Entity.Emp;
 using EmployeeManagement.Data.Entity.MasterData;
-using EmployeeManagement.Data.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagement.Data

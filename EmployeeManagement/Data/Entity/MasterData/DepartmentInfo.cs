@@ -1,4 +1,4 @@
-﻿using EmployeeManagement.Data.Entity.Employee;
+﻿using EmployeeManagement.Data.Entity.Emp;
 
 namespace EmployeeManagement.Data.Entity.MasterData
 {

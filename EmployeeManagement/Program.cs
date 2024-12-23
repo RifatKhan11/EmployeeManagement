@@ -46,8 +46,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromHours(1);
 
-    options.LoginPath = "/Auth/Account/Login";
-    options.AccessDeniedPath = "/Auth/Account/AccessDenied";
+    options.LoginPath = "/Home/Home/Index";
+    options.AccessDeniedPath = "/Home/Home/AccessDenied";
     options.SlidingExpiration = true;
 });
 #endregion
@@ -87,7 +87,7 @@ var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Auth/Home/Error");
+    app.UseExceptionHandler("/Home/Home/Error");
     app.UseHsts();
 }
 
@@ -100,14 +100,15 @@ app.UseCors("_myAllowSpecificOrigins");
 
 app.UseEndpoints(endpoints =>
 {
+    // Area-specific route
     endpoints.MapControllerRoute(
-    name: "admin",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+        name: "areas",
+        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
+    // Default route pointing to the Home area
     endpoints.MapControllerRoute(
-    name: "default",
-    pattern: "{area=auth}/{controller=account}/{action=login}/{id?}");
-
+        name: "default",
+        pattern: "{area=Home}/{controller=Home}/{action=Index}/{id?}");
 });
 
 app.Run();

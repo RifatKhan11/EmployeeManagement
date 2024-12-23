@@ -7,18 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\EmployeeInfo\Data\" />
-    <Folder Include="Areas\EmployeeInfo\Views\" />
-    <Folder Include="Areas\Home\Controllers\" />
+    <Folder Include="Areas\Employee\Data\" />
     <Folder Include="Areas\Home\Data\" />
-    <Folder Include="Areas\Home\Models\" />
-    <Folder Include="Areas\Home\Views\" />
-    <Folder Include="Areas\MasterData\Controllers\" />
     <Folder Include="Areas\MasterData\Data\" />
-    <Folder Include="Areas\MasterData\Models\" />
-    <Folder Include="Areas\MasterData\Views\" />
-    <Folder Include="Models\" />
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
