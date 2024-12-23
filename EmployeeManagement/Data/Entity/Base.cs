@@ -7,6 +7,6 @@
         public string updatedBy { get; set; }
         public DateTime? createdAt { get; set; }
         public string createdBy { get; set; }
-        public bool isActive { get; set; }
+        public bool isActive { get; set; }=true;
     }
 }

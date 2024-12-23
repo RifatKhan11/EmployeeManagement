@@ -22,7 +22,7 @@ namespace EmployeeManagement.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("EmployeeManagement.Data.Entity.Employee.EmployeeInfo", b =>
+            modelBuilder.Entity("EmployeeManagement.Data.Entity.Emp.EmployeeInfo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -70,7 +70,7 @@ namespace EmployeeManagement.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("EmployeeManagement.Data.Entity.Employee.PerformanceReview", b =>
+            modelBuilder.Entity("EmployeeManagement.Data.Entity.Emp.PerformanceReview", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -151,7 +151,7 @@ namespace EmployeeManagement.Migrations
                     b.ToTable("Departments");
                 });
 
-            modelBuilder.Entity("EmployeeManagement.Data.Entity.Employee.EmployeeInfo", b =>
+            modelBuilder.Entity("EmployeeManagement.Data.Entity.Emp.EmployeeInfo", b =>
                 {
                     b.HasOne("EmployeeManagement.Data.Entity.MasterData.DepartmentInfo", "department")
                         .WithMany()
@@ -161,9 +161,9 @@ namespace EmployeeManagement.Migrations
                     b.Navigation("department");
                 });
 
-            modelBuilder.Entity("EmployeeManagement.Data.Entity.Employee.PerformanceReview", b =>
+            modelBuilder.Entity("EmployeeManagement.Data.Entity.Emp.PerformanceReview", b =>
                 {
-                    b.HasOne("EmployeeManagement.Data.Entity.Employee.EmployeeInfo", "employee")
+                    b.HasOne("EmployeeManagement.Data.Entity.Emp.EmployeeInfo", "employee")
                         .WithMany()
                         .HasForeignKey("employeeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -174,7 +174,7 @@ namespace EmployeeManagement.Migrations
 
             modelBuilder.Entity("EmployeeManagement.Data.Entity.MasterData.DepartmentInfo", b =>
                 {
-                    b.HasOne("EmployeeManagement.Data.Entity.Employee.EmployeeInfo", "manager")
+                    b.HasOne("EmployeeManagement.Data.Entity.Emp.EmployeeInfo", "manager")
                         .WithMany()
                         .HasForeignKey("managerId")
                         .OnDelete(DeleteBehavior.Restrict);

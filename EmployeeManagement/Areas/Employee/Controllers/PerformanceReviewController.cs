@@ -2,10 +2,10 @@
 
 namespace EmployeeManagement.Areas.Employee.Controllers
 {
-    [Area("EmployeeInfo")]
+    [Area("Employee")]
     public class PerformanceReviewController : Controller
     {
-        public IActionResult PerformanceReview()
+        public IActionResult PerformanceReview(int page = 1, int pageSize = 7)
         {
             return View();
         }

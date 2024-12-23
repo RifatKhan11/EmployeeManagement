@@ -1,0 +1,126 @@
+﻿@model DepartmentModel
+
+@{
+    ViewData["Title"] = "Search Employee";
+}
+    <style>
+        .filter-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .filter-label {
+            font-weight: bold;
+        }
+
+        .employee-card {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+
+
+    <div class="container my-4">
+        <h1 class="text-center">Employee Search</h1>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <form id="searchForm" onsubmit="filterEmployees(event)">
+                <div class="row">
+                    <!-- Search by Name -->
+                    <div class="col-md-4 mb-3">
+                        <label for="name" class="filter-label">Search by Name:</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Enter employee name">
+                    </div>
+
+                    <!-- Filter by Department -->
+                    <div class="col-md-4 mb-3">
+                        <label for="department" class="filter-label">Filter by Department:</label>
+                        <select id="department" name="department" class="form-control">
+                            <option value="">Select Department</option>
+                            <option value="HR">HR</option>
+                            <option value="IT">IT</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Marketing">Marketing</option>
+                        </select>
+                    </div>
+
+                    <!-- Filter by Position -->
+                    <div class="col-md-4 mb-3">
+                        <label for="position" class="filter-label">Filter by Position:</label>
+                        <select id="position" name="position" class="form-control">
+                            <option value="">Select Position</option>
+                            <option value="Manager">Manager</option>
+                            <option value="Developer">Developer</option>
+                            <option value="Analyst">Analyst</option>
+                            <option value="Executive">Executive</option>
+                        </select>
+                    </div>
+
+                    <!-- Filter by Performance Score -->
+                    <div class="col-md-6 mb-3">
+                        <label for="performanceScore" class="filter-label">Performance Score Range:</label>
+                        <div class="d-flex align-items-center">
+                            <input type="number" id="scoreMin" name="scoreMin" class="form-control mr-2" placeholder="Min" min="0">
+                            <span>to</span>
+                            <input type="number" id="scoreMax" name="scoreMax" class="form-control ml-2" placeholder="Max" min="0">
+                        </div>
+                    </div>
+
+                    <!-- Search Button -->
+                    <div class="col-md-12 text-right">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                        <button type="reset" class="btn btn-secondary">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results">
+            <!-- Employee Cards will be dynamically added here -->
+        </div>
+    </div>
+
+    <script>
+        // Example function to handle filtering (Replace with actual API calls or logic)
+        function filterEmployees(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const department = document.getElementById('department').value;
+            const position = document.getElementById('position').value;
+            const scoreMin = document.getElementById('scoreMin').value;
+            const scoreMax = document.getElementById('scoreMax').value;
+
+            console.log("Filters:", { name, department, position, scoreMin, scoreMax });
+
+            // Simulate search results (Replace with real API calls)
+            const mockResults = [
+                { name: "John Doe", department: "IT", position: "Developer", score: 85 },
+                { name: "Jane Smith", department: "HR", position: "Manager", score: 90 }
+            ];
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = mockResults
+                .filter(emp => (!name || emp.name.includes(name)) &&
+                    (!department || emp.department === department) &&
+                    (!position || emp.position === position) &&
+                    (!scoreMin || emp.score >= scoreMin) &&
+                    (!scoreMax || emp.score <= scoreMax))
+                .map(emp => `
+                            <div class="employee-card">
+                                <h5>${emp.name}</h5>
+                                <p>Department: ${emp.department}</p>
+                                <p>Position: ${emp.position}</p>
+                                <p>Performance Score: ${emp.score}</p>
+                            </div>
+                        `)
+                .join('');
+        }
+    </script>
+
+
