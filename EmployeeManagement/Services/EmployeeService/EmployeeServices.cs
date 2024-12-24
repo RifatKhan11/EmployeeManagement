@@ -59,7 +59,7 @@ namespace EmployeeManagement.Services.EmployeeService
            TotalRecords = count,
            PageSize = pageSize,
            TotalPages = (int)Math.Ceiling((double)count / pageSize)
-       }).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+       }).Skip((page - 1) * pageSize).Take(pageSize).OrderByDescending(x=>x.Id).ToListAsync();
         }
 
         public async Task<EmployeeInfo> GetByIdAsync(int id)
@@ -136,7 +136,7 @@ namespace EmployeeManagement.Services.EmployeeService
                        TotalRecords = count,
                        PageSize = pageSize,
                        TotalPages = (int)Math.Ceiling((double)count / pageSize)
-                   }).Skip((page - 1) * pageSize).Take(pageSize).AsNoTracking().ToListAsync();
+                   }).Skip((page - 1) * pageSize).Take(pageSize).AsNoTracking().OrderByDescending(x=>x.Id).ToListAsync();
         }
         public async Task<PerformanceReviewModel> GetAllPerformanceAsync(int Id)
         {

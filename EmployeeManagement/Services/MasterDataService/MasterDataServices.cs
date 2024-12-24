@@ -58,7 +58,7 @@ namespace EmployeeManagement.Services.MasterDataService
                     TotalRecords = count,
                     PageSize = pageSize,
                     TotalPages = (int)Math.Ceiling((double)count / pageSize)
-                })
+                }).OrderByDescending(x => x.Id)
                 .ToListAsync();
 
             return departments;
