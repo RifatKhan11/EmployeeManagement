@@ -3,5 +3,5 @@
 
 # This Is A Crud Operation Without Any Auth. 
 # Employee Manu  Help Employee Add And Info, Master Data For Department And Performance For Performance Review Add/Report
-
 # There is server side pagination from both database and backend and also jquery paging for low data pages like department wise performance review.
+# There Is A Database Script And The Database File In Email With A Google Drive. Pls Restore The Database As The Name Given In Appsettings.json/ Or Run The Scripts. Check The 'Data Source' Name Before Running The Application.
