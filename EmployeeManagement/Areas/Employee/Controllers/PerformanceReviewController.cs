@@ -3,6 +3,8 @@ using EmployeeManagement.Data.Entity.Emp;
 using EmployeeManagement.Services.EmployeeService.Interfaces;
 using EmployeeManagement.Services.MasterDataServices.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Framework;
+using System.Drawing.Printing;
 
 namespace EmployeeManagement.Areas.Employee.Controllers
 {
@@ -48,6 +50,14 @@ namespace EmployeeManagement.Areas.Employee.Controllers
         {
             await _employeeRepository.DeleteReview(id);
             return RedirectToAction("PerformanceReview");
+        }
+
+        public async Task<IActionResult> PreformanceReviewReport()
+        {
+            var perform = await _employeeRepository.GetScoreReport();
+            EmployeeInfoModel model = new EmployeeInfoModel();
+            model.sp_PerformanceReview = perform;
+            return View(model);
         }
     }
 }

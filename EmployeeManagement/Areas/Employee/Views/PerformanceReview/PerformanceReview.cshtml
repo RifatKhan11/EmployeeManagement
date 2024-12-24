@@ -17,7 +17,7 @@
                     <option value="">-- Select Employee --</option>
                     @foreach (var emp in Model.employeeList)
                     {
-                        <option value="@emp.Id">@emp.name</option>
+                        <option value="@emp.Id">@emp.name-@emp.department</option>
                     }
                 </select>
             </div>

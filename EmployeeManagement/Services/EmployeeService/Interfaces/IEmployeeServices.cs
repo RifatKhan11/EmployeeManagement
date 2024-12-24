@@ -20,7 +20,7 @@ namespace EmployeeManagement.Services.EmployeeService.Interfaces
         Task AddPerformanceAsync(PerformanceReview employee);
         Task UpdatePerformanceAsync(PerformanceReview perfm);
         Task DeleteReview(int id);
-        Task<EmployeeSearchModel> GetScoreReport(int page, int pageSize);
+        Task<IEnumerable<Sp_PerformanceReviewModel>> GetScoreReport();
         #endregion
     }
 }

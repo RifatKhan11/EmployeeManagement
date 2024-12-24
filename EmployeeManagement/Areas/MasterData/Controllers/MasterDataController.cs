@@ -18,7 +18,7 @@ namespace EmployeeManagement.Areas.MasterData.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DepartmentInfo(int page = 1, int pageSize = 7)
+        public async Task<IActionResult> DepartmentInfo(int page = 1, int pageSize = 2)
         {
             var departmentModels = await _iMasterDataServices.GetAllAsync(page, pageSize);
 

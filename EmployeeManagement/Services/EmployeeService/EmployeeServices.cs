@@ -4,6 +4,7 @@ using EmployeeManagement.Data.Entity.Emp;
 using EmployeeManagement.Services.Dapper.IInterfaces;
 using EmployeeManagement.Services.EmployeeService.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing;
 using System.Drawing.Printing;
 using System.Linq;
 
@@ -107,8 +108,8 @@ namespace EmployeeManagement.Services.EmployeeService
         public async Task<IEnumerable<Sp_EmployeeSearchModel>> GetEmployeeByFilter(string name, int deptId, string position, int score, int page, int pageSize)
         {
 
-            
-            var data = await _dapper.FromSqlAsync<Sp_EmployeeSearchModel>($"Sp_GetEmployeeBy '{name}',{deptId},'{position}',{score},{page},{pageSize}");            
+            var leave = (page - 1) * pageSize;
+            var data = await _dapper.FromSqlAsync<Sp_EmployeeSearchModel>($"Sp_GetEmployeeBy '{name}',{deptId},'{position}',{score},{leave},{pageSize}");            
             return data;
         }
         #endregion
@@ -192,18 +193,11 @@ namespace EmployeeManagement.Services.EmployeeService
 
 
 
-        public async Task<EmployeeSearchModel> GetScoreReport(int page, int pageSize)
+        public async Task<IEnumerable<Sp_PerformanceReviewModel>> GetScoreReport()
         {
-
-            EmployeeSearchModel employeeSearchModel = null;
-            var data = await _dapper.FromSqlAsync<Sp_EmployeeSearchModel>($"Sp_GetEmployeInfo");
-
-            employeeSearchModel.sp_EmployeeSearch = data;
-            employeeSearchModel.CurrentPage = page;
-            employeeSearchModel.TotalRecords = data.Count();
-            employeeSearchModel.PageSize = pageSize;
-            employeeSearchModel.TotalPages = (int)Math.Ceiling((double)data.Count() / pageSize);
-            return employeeSearchModel;
+            var data = await _dapper.FromSqlAsync<Sp_PerformanceReviewModel>($"Sp_PerformanceReview");
+            
+            return data;
 
 
 
